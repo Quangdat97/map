@@ -156,8 +156,9 @@ const Map = ()=> {
                 region: 'US',
                 displayMode: 'regions',
                 resolution: 'provinces',
-                colors: ['blue', 'green', 'orange'],
+                colors: ['red', 'blue', 'orange'],
             }}
+            
             />
         </div>
     );
