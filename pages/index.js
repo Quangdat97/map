@@ -125,7 +125,7 @@ const Map = ()=> {
     }
     const [Zipcode, setZipcode] = useState(null)
     const [State, setState] = useState('')
-    const url ='http://api.zippopotam.us/us/'
+    const url ='https://api.zippopotam.us/us/'
 
     const handleZipcode = (e) =>{
         setZipcode(e.target.value.trim())
@@ -133,9 +133,7 @@ const Map = ()=> {
     const handleState = async(e) =>{
         e.preventDefault()
         try{
-            console.log('url',url+Zipcode);
             const {data} = await axios.get(url+Zipcode)
-            console.log('data',data);
             setState(data.places[0].state)
         }
         catch(e){
