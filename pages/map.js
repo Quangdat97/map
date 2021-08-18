@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { Chart } from "react-google-charts";
+// import { Chart } from "react-google-charts";
 import Select from 'react-select';
-
+import {
+    ComposableMap,
+    Geographies,
+    Geography,
+    ZoomableGroup
+  } from "react-simple-maps"
 
 
 const options = [
@@ -118,51 +123,41 @@ const data2 = [
     ['US-WI', 5000],
     ['US-WY', 5100]
 ];
-
-
+const geoUrl ="https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"
 
 const Map = ()=> {
-    const [country, setCountry] = useState('Select')
-    const handlechange = (e) =>{
-        setCountry(e.value)
-    }
-    return (
-        <div className="App">
-            <div style={{width:'20%'}}>
-                <Select 
-                options={options} 
-                onChange={handlechange}
-                />
-            </div>
-            
-            <Chart
-            chartEvents={[
-                {
-                eventName: "select",
-                callback: ({ chartWrapper }) => {
-                    const chart = chartWrapper.getChart();
-                    const selection = chart.getSelection();
-                    if (selection.length === 0) return;
-                    const region = data[selection[0].row + 1];
-                    console.log("Selected : " + region);
-                }
-                }
-            ]}
-            chartType="GeoChart"
-            width="100%"
-            height="400px"
-            data={ country=="Select" ? data : data2}
-            options = {{
-                region: 'US',
-                displayMode: 'regions',
-                resolution: 'provinces',
-                colors: ['red', 'blue', 'orange'],
-            }}
-            
-            />
-        </div>
-    );
 
+    return (
+        <div>
+            <ComposableMap>
+            <ZoomableGroup>
+                <Geographies geography={geoUrl}>
+                {({geographies}) => geographies.map(geo =>
+                    <Geography 
+                    key={geo.rsmKey} 
+                    geography={geo} 
+                    style={{
+                        default: {
+                          fill: "#D6D6DA",
+                          outline: "none"
+                        },
+                        hover: {
+                          fill: "#F53",
+                          outline: "none"
+                        },
+                        pressed: {
+                          fill: "#E42",
+                          outline: "none"
+                        }
+                      }}
+                    />
+                )}
+                </Geographies>
+                </ZoomableGroup>
+            </ComposableMap>
+        </div>
+    )
 }
+
 
 export default Map;

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Chart } from "react-google-charts";
 import Select from 'react-select';
-
-
+import axios from 'axios';
 
 const options = [
   { value: 'Select', label: 'Select' },
@@ -119,20 +118,42 @@ const data2 = [
     ['US-WY', 5100]
 ];
 
-
-
 const Map = ()=> {
     const [country, setCountry] = useState('Select')
     const handlechange = (e) =>{
         setCountry(e.value)
     }
+    const [Zipcode, setZipcode] = useState(null)
+    const [State, setState] = useState('')
+    const url ='http://api.zippopotam.us/us/'
+
+    const handleZipcode = (e) =>{
+        setZipcode(e.target.value.trim())
+    }
+    const handleState = async(e) =>{
+        e.preventDefault()
+        try{
+            const {data} = await axios.get(url+Zipcode)
+            setState(data.places[0].state)
+        }
+        catch(e){
+            console.log('error! cannot found');
+            setState("Not found!")
+        }
+    }
     return (
         <div className="App">
-            <div style={{width:'20%'}}>
+            <div style={{width:'50%', maxWidth:'200px', margin:'20px 80px'}}>
                 <Select 
                 options={options} 
                 onChange={handlechange}
                 />
+            </div>
+            <div style={{display:'flex', margin:'10px 50px', height:'30px' ,width:'100%', alignItems:'center'}}>
+                <label for="zipcode">Zipcode: </label>
+                <input id="zipcode" onChange={handleZipcode} placeholder="Enter zipcode" type="number"></input>
+                <button onClick={handleState}>Get State</button>
+                <p style={{paddingLeft:'20px'}}>Sate: {State}</p>
             </div>
             
             <Chart
