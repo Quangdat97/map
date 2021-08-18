@@ -150,7 +150,7 @@ const Map = ()=> {
                 />
             </div>
             <div style={{display:'flex', margin:'10px 50px', height:'30px' ,width:'100%', alignItems:'center'}}>
-                <label for="zipcode">Zipcode: </label>
+                <label>Zipcode: </label>
                 <input id="zipcode" onChange={handleZipcode} placeholder="Enter zipcode" type="number"></input>
                 <button onClick={handleState}>Get State</button>
                 <p style={{paddingLeft:'20px'}}>Sate: {State}</p>
